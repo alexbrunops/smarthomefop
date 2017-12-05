@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>br.com.rise.smarthome</groupId>
+    <artifactId>smarthome-fop</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>RiSE SmartHome - FOP</name>
+    <packaging>jar</packaging>
+
+    <organization>
+        <name>RiSE</name>
+    </organization>
+
+    <properties>
+
+        <!-- Apache Commons -->
+        <org.apache.commons.collections.version>3.2.2</org.apache.commons.collections.version>
+        <org.apache.commons.version>2.6</org.apache.commons.version>
+
+        <!-- Maven-compiler-plugin -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.compiler.target>1.8</project.build.compiler.target>
+        <project.build.compiler.source>1.8</project.build.compiler.source>
+
+        <!-- Maven Version -->
+        <org.apache.maven.release.plugins.version>2.5.3</org.apache.maven.release.plugins.version>
+        <org.apache.maven.plugin.resources.version>2.7</org.apache.maven.plugin.resources.version>
+        <org.apache.maven.plugin.compile.version>3.3</org.apache.maven.plugin.compile.version>
+        <org.apache.maven.plugin.clean.version>3.0.0</org.apache.maven.plugin.clean.version>
+        <org.apache.maven.plugins.surefire.version>2.20</org.apache.maven.plugins.surefire.version>
+        <org.apache.maven.deploy.plugins.version>2.8.2</org.apache.maven.deploy.plugins.version>
+
+        <org.apache.maven.plugin.skip>false</org.apache.maven.plugin.skip>
+
+    </properties>
+
+    <dependencies>
+        <!-- Apache Commons -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${org.apache.commons.collections.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${org.apache.commons.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.rxtx/rxtx -->
+        <dependency>
+            <groupId>org.rxtx</groupId>
+            <artifactId>rxtx</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <pluginManagement>
+
+            <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.compile.version}</version>
+                    <configuration>
+                        <source>${project.build.compiler.source}</source>
+                        <target>${project.build.compiler.target}</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${org.apache.maven.plugin.resources.version}</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <!-- Build an executable JAR -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib/</classpathPrefix>
+                                <mainClass>br.com.rise.smarthome.MainTest.MainClass</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <!--<plugin>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-deploy-plugin</artifactId>-->
+                    <!--<version>${org.apache.maven.deploy.plugins.version}</version>-->
+                    <!--<configuration>-->
+                        <!--<skip>${org.apache.maven.plugins.skip}</skip>-->
+                    <!--</configuration>-->
+                <!--</plugin>-->
+
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+
+</project>
