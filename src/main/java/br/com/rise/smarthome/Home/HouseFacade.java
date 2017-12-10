@@ -3,6 +3,7 @@ package br.com.rise.smarthome.Home;
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.Devices.Hardware;
 import br.com.rise.smarthome.Devices.Led;
+import br.com.rise.smarthome.PresenceIllusion.PresenceIllusion;
 import br.com.rise.smarthome.UserIllumination.UserIllumination;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -32,9 +33,13 @@ public class HouseFacade {
 	private void loadMandatoryFeatures() {
 		UserIllumination userIlumination = UserIllumination.getInstance(new ArrayList<Led>());
 		addFeature(userIlumination);
-//		PresenceIlusion presenceIlusion = PresenceIlusion.getInstance(userIlumination);
-//		addFeature(presenceIlusion);
+		PresenceIllusion presenceIlusion = PresenceIllusion.getInstance(userIlumination);
+		addFeature(presenceIlusion);
 	}
+
+//	public void addAvaliableFeature(BaseFeature featureBase){
+//		avaliableFeatures.add(featureBase);
+//	}
 
 	private void loadAvailableFeatures() {
 		availableFeatures = new ArrayList<BaseFeature>();
@@ -58,6 +63,10 @@ public class HouseFacade {
 
 	private void resolveRemotionFeatureHierarchy(BaseFeature feature) {
 		Class<? extends BaseFeature> featureClass = feature.getClass();
+
+		if(featureClass.getSuperclass().equals(BaseFeature.class)) {
+			return;
+		}
 
 		// Alternative Features have abstract superclass, so always can be deleted
 		if(Modifier.isAbstract(featureClass.getSuperclass().getModifiers())){
@@ -122,9 +131,11 @@ public class HouseFacade {
 		}
 
 		for (BaseFeature featureBase : features) {
-			for (BaseFeature requiredFeature : featureBase.getRequiredFeatures()) {
-				if (feature == requiredFeature) {
-					return false;
+			if (CollectionUtils.isNotEmpty(featureBase.getRequiredFeatures())) {
+				for (BaseFeature requiredFeature : featureBase.getRequiredFeatures()) {
+					if (feature == requiredFeature) {
+						return false;
+					}
 				}
 			}
 		}

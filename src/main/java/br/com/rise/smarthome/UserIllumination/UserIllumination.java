@@ -2,10 +2,12 @@ package br.com.rise.smarthome.UserIllumination;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.Devices.Led;
+import br.com.rise.smarthome.Feature.MandatoryFeature;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 
+@MandatoryFeature
 public class UserIllumination extends BaseFeature {
 
 	private ArrayList<Led> leds;

@@ -96,7 +96,7 @@
                             <manifest>
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib/</classpathPrefix>
-                                <mainClass>br.com.rise.smarthome.MainTest.MainClass</mainClass>
+                                <mainClass>br.com.rise.smarthome.Home.Main</mainClass>
                             </manifest>
                         </archive>
                     </configuration>

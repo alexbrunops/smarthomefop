@@ -14,7 +14,7 @@ public final class ArduinoControl implements SerialPortEventListener {
 
 	private OutputStream serialOut;
 	private int rate = 9600;
-	private String portName="/dev/tty.usbmodem411";
+	private String portName="/dev/tty.usbmodem1411";
 	private SerialPort serialPort;
 	private BufferedReader input;
 	private String arduinoOut;
