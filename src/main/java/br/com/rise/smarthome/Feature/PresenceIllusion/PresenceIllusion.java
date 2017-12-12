@@ -1,9 +1,9 @@
-package br.com.rise.smarthome.PresenceIllusion;
+package br.com.rise.smarthome.Feature.PresenceIllusion;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.Devices.Led;
 import br.com.rise.smarthome.Feature.MandatoryFeature;
-import br.com.rise.smarthome.UserIllumination.UserIllumination;
+import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ConcurrentModificationException;

@@ -1,4 +1,4 @@
-package br.com.rise.smarthome.UserIllumination;
+package br.com.rise.smarthome.Feature.UserIllumination;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.Devices.Led;

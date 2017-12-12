@@ -3,10 +3,10 @@ package br.com.rise.smarthome.Home;
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Devices.ArduinoControl;
-import br.com.rise.smarthome.PresenceIllusion.PresenceIllusion;
-import br.com.rise.smarthome.PresenceIllusion.PresenceIllusionUI;
-import br.com.rise.smarthome.UserIllumination.UserIllumination;
-import br.com.rise.smarthome.UserIllumination.UserIlluminationUI;
+import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusion;
+import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusionUI;
+import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
+import br.com.rise.smarthome.Feature.UserIllumination.UserIlluminationUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

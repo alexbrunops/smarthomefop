@@ -1,4 +1,4 @@
-package br.com.rise.smarthome.PresenceIllusion;
+package br.com.rise.smarthome.Feature.PresenceIllusion;
 
 import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Home.Main;
