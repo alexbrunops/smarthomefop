@@ -7,6 +7,7 @@ public abstract class BaseFeature {
 	private String name;
 	private boolean isActive=true;
 	private ArrayList<BaseFeature> requiredFeatures;
+	private BaseUI featureUI;
 
 	public abstract void proceedActions(String[] args);
 
@@ -38,8 +39,16 @@ public abstract class BaseFeature {
 		return requiredFeatures;
 	}
 
+	public BaseUI getFeatureUI() {
+		return featureUI;
+	}
+
+	public void setFeatureUI(BaseUI featureUI) {
+		this.featureUI = featureUI;
+	}
+
 	@Override public String toString() {
-		return "BaseFeature{" + "name='" + name + '\'' + ", isActive=" + isActive + ", requiredFeatures=" + requiredFeatures + '}';
+		return getName();
 	}
 
 }

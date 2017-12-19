@@ -1,8 +1,11 @@
 package br.com.rise.smarthome.Home;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
+import br.com.rise.smarthome.Devices.Alarm;
 import br.com.rise.smarthome.Devices.Hardware;
 import br.com.rise.smarthome.Devices.Led;
+import br.com.rise.smarthome.Feature.Alarm.AlarmAgainstRobbery;
+import br.com.rise.smarthome.Feature.PanicMode.PanicMode;
 import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusion;
 import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,6 +27,7 @@ public class HouseFacade {
 		hardwares = new ArrayList<Hardware>();
 		loadMandatoryFeatures();
 		loadAvailableFeatures();
+		loadOptionalFeatures();
 		automatedFeaturesRunnable = new AutomatedFeaturesRunnable(features);
 		(new Thread(automatedFeaturesRunnable)).start();
 
@@ -34,11 +38,25 @@ public class HouseFacade {
 		addFeature(userIlumination);
 		PresenceIllusion presenceIlusion = PresenceIllusion.getInstance(userIlumination);
 		addFeature(presenceIlusion);
+		PanicMode panicMode = PanicMode.getInstance(userIlumination);
+		addFeature(panicMode);
 	}
 
-//	public void addAvaliableFeature(BaseFeature featureBase){
-//		avaliableFeatures.add(featureBase);
-//	}
+	private void loadOptionalFeatures() {
+		AlarmAgainstRobbery alarmAgainstRobbery = AlarmAgainstRobbery.getInstance(new ArrayList<Alarm>());
+		addFeature(alarmAgainstRobbery);
+
+//		LockDoors lockDoors = LockDoors.getInstance(new ArrayList<AutomaticDoor>());
+//		addFeature(lockDoors);
+//		UserAirConditionerControl userAirConditionerControl = UserAirConditionerControl.getInstance(new ArrayList<AirConditioner>());
+//		addFeature(userAirConditionerControl);
+//		UserWindowControl userWindowControl = UserWindowControl.getInstance(new ArrayList<AutomaticWindow>());
+//		addFeature(userWindowControl);
+	}
+
+	public void addAvailableFeature(BaseFeature featureBase){
+		availableFeatures.add(featureBase);
+	}
 
 	private void loadAvailableFeatures() {
 		availableFeatures = new ArrayList<BaseFeature>();
@@ -63,13 +81,14 @@ public class HouseFacade {
 	private void resolveRemotionFeatureHierarchy(BaseFeature feature) {
 		Class<? extends BaseFeature> featureClass = feature.getClass();
 
-		if(featureClass.getSuperclass().equals(BaseFeature.class)) {
-			return;
-		}
+//		if(featureClass.getSuperclass().equals(BaseFeature.class)) {
+//			return;
+//		}
 
 		// Alternative Features have abstract superclass, so always can be deleted
 		if(Modifier.isAbstract(featureClass.getSuperclass().getModifiers())){
 			features.remove(feature);
+			addAvailableFeature(feature);
 		}
 
 		// search for a feature brother

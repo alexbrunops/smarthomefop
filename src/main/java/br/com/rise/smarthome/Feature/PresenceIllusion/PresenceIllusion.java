@@ -1,6 +1,7 @@
 package br.com.rise.smarthome.Feature.PresenceIllusion;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
+import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Devices.Led;
 import br.com.rise.smarthome.Feature.MandatoryFeature;
 import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
@@ -29,6 +30,10 @@ public class PresenceIllusion extends BaseFeature {
 
 	public static void destroy() {
 		presenceIllusion = null;
+	}
+
+	@Override public BaseUI getFeatureUI() {
+		return new PresenceIllusionUI();
 	}
 
 	@Override public void proceedActions(String[] args) {
@@ -72,7 +77,7 @@ public class PresenceIllusion extends BaseFeature {
 		}
 
 		public PresenceIllusionThread(UserIllumination userIllumination){
-			this(-1, 5000, userIllumination);
+			this(-1, 60000, userIllumination);
 		}
 
 		@Override

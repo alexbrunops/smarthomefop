@@ -1,6 +1,7 @@
 package br.com.rise.smarthome.Feature.UserIllumination;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
+import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Devices.Led;
 import br.com.rise.smarthome.Feature.MandatoryFeature;
 import org.apache.commons.collections.CollectionUtils;
@@ -59,5 +60,9 @@ public class UserIllumination extends BaseFeature {
 
 	public void setLeds(ArrayList<Led> leds) {
 		this.leds = leds;
+	}
+
+	@Override public BaseUI getFeatureUI() {
+		return new UserIlluminationUI();
 	}
 }

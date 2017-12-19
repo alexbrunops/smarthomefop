@@ -3,6 +3,8 @@ package br.com.rise.smarthome.Home;
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Devices.ArduinoControl;
+import br.com.rise.smarthome.Feature.Alarm.AlarmAgainstRobbery;
+import br.com.rise.smarthome.Feature.Alarm.AlarmAgainstRobberyUI;
 import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusion;
 import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusionUI;
 import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
@@ -52,47 +54,34 @@ public class Main extends JFrame {
 
 	public static void updateFeaturesTabs(){
 		for (BaseFeature feature : house.getFeatures()) {
-
-			if(feature instanceof UserIllumination){
-				boolean alreadyExist = false;
-				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-					if (tabbedPane.getComponentAt(i) instanceof BaseUI) {
-						BaseUI featureTab = (BaseUI) tabbedPane.getComponentAt(i);
-
-						if (featureTab.isForClass(UserIllumination.class)) {
-							alreadyExist = true;
-							break;
-						}
-					}
-				}
-				if (!alreadyExist) {
-					UserIlluminationUI userIlluminationUI = new UserIlluminationUI();
-					tabbedPane.addTab("User Illumination", null, userIlluminationUI);
-				}
+			if (featureAlreadyExist(feature.getClass()) == null) {
+				tabbedPane.addTab(feature.getName(), null, feature.getFeatureUI());
 			}
-
-			if(feature instanceof PresenceIllusion){
-				boolean alreadyExist = false;
-				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-					if(tabbedPane.getComponentAt(i) instanceof BaseUI){
-						BaseUI featureTab = (BaseUI) tabbedPane.getComponentAt(i);
-						if(featureTab.isForClass(PresenceIllusion.class)){
-							alreadyExist = true;
-							break;
-						}
-					}
-				}
-				if(!alreadyExist){
-					PresenceIllusionUI presenceIlusionUI = new PresenceIllusionUI();
-					tabbedPane.addTab("Presence Illusion", null, presenceIlusionUI);
-				}
-			}
-
 		}
 	}
 
 	public static void removeFeatureTab(Class<? extends BaseFeature> clazz) {
 
+		if (clazz.equals(AlarmAgainstRobbery.class)) {
+			Component component = featureAlreadyExist(clazz);
+			if (component != null) {
+				tabbedPane.remove(component);
+			}
+		}
+
+	}
+
+	private static Component featureAlreadyExist(Class<? extends BaseFeature> clazz) {
+		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+			if(tabbedPane.getComponentAt(i) instanceof BaseUI) {
+				BaseUI featureTab = (BaseUI) tabbedPane.getComponentAt(i);
+				if(featureTab.isForClass(clazz)) {
+					return featureTab;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	public static HouseFacade getHouseInstance() {

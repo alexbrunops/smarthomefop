@@ -7,8 +7,6 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class FeatureControlTab extends JPanel {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				updateAvaliableCombo();
+				updateAvailableCombo();
 				updateCurrentCombo();
 			}
 		});
@@ -41,7 +39,7 @@ public class FeatureControlTab extends JPanel {
 
 		cmbAvailableFeature = new JComboBox<BaseFeature>();
 		cmbAvailableFeature.setBounds(64, 13, 355, 50);
-		updateAvaliableCombo();
+		updateAvailableCombo();
 		panel.add(cmbAvailableFeature);
 
 		JButton btnAdd = new JButton("Add");
@@ -50,7 +48,7 @@ public class FeatureControlTab extends JPanel {
 
 			if (newFeature != null) {
 				Main.getHouseInstance().addFeature(newFeature);
-				updateAvaliableCombo();
+				updateAvailableCombo();
 				updateCurrentCombo();
 				Main.updateFeaturesTabs();
 			} else {
@@ -95,9 +93,9 @@ public class FeatureControlTab extends JPanel {
 			BaseFeature featureBase = (BaseFeature) cmbCurrentFeatures.getSelectedItem();
 			if (featureBase != null) {
 				Main.getHouseInstance().removeFeature(featureBase);
-				updateAvaliableCombo();
-				updateCurrentCombo();
 				Main.removeFeatureTab(featureBase.getClass());
+				updateAvailableCombo();
+				updateCurrentCombo();
 			} else {
 				JOptionPane.showMessageDialog(null, "Select feature to be removed.");
 			}
@@ -105,10 +103,10 @@ public class FeatureControlTab extends JPanel {
 		panel_2.add(btnRemove);
 	}
 
-	private void updateAvaliableCombo() {
+	private void updateAvailableCombo() {
 		ArrayList<BaseFeature> featureBaseList = Main.getHouseInstance().getAvailableFeatures();
 		BaseFeature[] features= new BaseFeature[featureBaseList.size()];
-		int i=0;
+		int i = 0;
 		for (BaseFeature feature : featureBaseList) {
 			features[i] = (BaseFeature) feature;
 			i++;
