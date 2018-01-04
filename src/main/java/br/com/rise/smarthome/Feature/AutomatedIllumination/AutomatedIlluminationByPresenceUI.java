@@ -1,5 +1,7 @@
 package br.com.rise.smarthome.Feature.AutomatedIllumination;
 
+import br.com.rise.smarthome.BaseComponents.BaseUI;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,35 +19,34 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import br.com.rise.smarthome.Home.Main;
-import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Devices.Hardware;
 import br.com.rise.smarthome.Devices.Led;
-import br.com.rise.smarthome.Devices.LightSensor;
+import br.com.rise.smarthome.Devices.PresenceSensor;
 
-public class AutomatedIlluminationByLuminosityUI extends BaseUI {
+
+public class AutomatedIlluminationByPresenceUI extends BaseUI {
 
     private static final long serialVersionUID = 4435596811596503762L;
-    private JComboBox<Led> cmbAvaliableLeds;
+    private JComboBox<Led> cmbAvailableLeds;
     private JComboBox<Led> cmbCurrentLeds;
-    private AutomatedIlluminationByLuminosity automatedIlluminationByLuminosity;
-    private JComboBox<LightSensor> cmbSensor;
+    private AutomatedIlluminationByPresence automatedIlluminationByPresence;
+    private JComboBox<PresenceSensor> cmbSensor;
     private JToggleButton tglActivateFeature;
 
-    public AutomatedIlluminationByLuminosityUI() {
+    public AutomatedIlluminationByPresenceUI() {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
-                updateAvailableCombo();
+                updateAvaliableCombo();
                 updateLedsToAutomateCombo();
-                updateLightSensorCombo();
+                updateLighSensorCombo();
             }
         });
-
-        automatedIlluminationByLuminosity = (AutomatedIlluminationByLuminosity) Main.getHouseInstance().getFeatureByType(AutomatedIlluminationByLuminosity.class);
-        setForClass(AutomatedIlluminationByLuminosity.class);
+        automatedIlluminationByPresence = (AutomatedIlluminationByPresence) Main.getHouseInstance().getFeatureByType(AutomatedIlluminationByPresence.class);
+        setForClass(AutomatedIlluminationByPresence.class);
         setLayout(null);
         JPanel panel = new JPanel();
-        panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Feature Action", TitledBorder.LEADING, TitledBorder.TOP, null,  new Color(0, 0, 204)));
+        panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), "Feature Action", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 204)));
         panel.setBounds(12, 260, 438, 120);
         add(panel);
         panel.setLayout(null);
@@ -57,14 +58,13 @@ public class AutomatedIlluminationByLuminosityUI extends BaseUI {
             public void actionPerformed(ActionEvent e) {
                 if(tglActivateFeature.isSelected()){
                     tglActivateFeature.setText("Stop Feature");
-                    automatedIlluminationByLuminosity.setActive(true);
+                    automatedIlluminationByPresence.setActive(true);
                 }else{
                     tglActivateFeature.setText("Start Feature");
-                    automatedIlluminationByLuminosity.setActive(false);
+                    automatedIlluminationByPresence.setActive(false);
                 }
             }
         });
-
         panel.add(tglActivateFeature);
 
         JPanel panel_1 = new JPanel();
@@ -76,19 +76,19 @@ public class AutomatedIlluminationByLuminosityUI extends BaseUI {
         JLabel lblLedPin = new JLabel("Avaliable Leds:");
         lblLedPin.setBounds(6, 90, 101, 16);
         panel_1.add(lblLedPin);
-        cmbAvaliableLeds = new JComboBox<Led>();
-        updateAvailableCombo();
-        cmbAvaliableLeds.addActionListener(new ActionListener() {
+        cmbAvailableLeds = new JComboBox<Led>();
+        updateAvaliableCombo();
+        cmbAvailableLeds.addActionListener(new ActionListener() {
             public synchronized void actionPerformed(ActionEvent e) {
-                Led led = (Led) cmbAvaliableLeds.getSelectedItem();
-                if(!automatedIlluminationByLuminosity.getLedsToAutomate().contains(led)){
-                    automatedIlluminationByLuminosity.getLedsToAutomate().add(led);
+                Led led = (Led) cmbAvailableLeds.getSelectedItem();
+                if(!automatedIlluminationByPresence.getLedsToAutomate().contains(led)){
+                    automatedIlluminationByPresence.getLedsToAutomate().add(led);
                     updateLedsToAutomateCombo();
                 }
             }
         });
-        cmbAvaliableLeds.setBounds(125, 85, 293, 30);
-        panel_1.add(cmbAvaliableLeds);
+        cmbAvailableLeds.setBounds(125, 85, 293, 30);
+        panel_1.add(cmbAvailableLeds);
 
         JLabel lblCurrentLeds = new JLabel("Leds to Automate:");
         lblCurrentLeds.setBounds(6, 143, 138, 16);
@@ -99,7 +99,7 @@ public class AutomatedIlluminationByLuminosityUI extends BaseUI {
         cmbCurrentLeds.addActionListener(new ActionListener() {
             public synchronized void actionPerformed(ActionEvent e) {
                 Led led = (Led) cmbCurrentLeds.getSelectedItem();
-                automatedIlluminationByLuminosity.getLedsToAutomate().remove(led);
+                automatedIlluminationByPresence.getLedsToAutomate().remove(led);
                 updateLedsToAutomateCombo();
             }
         });
@@ -112,45 +112,45 @@ public class AutomatedIlluminationByLuminosityUI extends BaseUI {
         lblWhen.setBounds(6, 180, 412, 16);
         panel_1.add(lblWhen);
 
-        JLabel lblAvailableSensors = new JLabel("Avaliable Sensors:");
-        lblAvailableSensors.setBounds(6, 40, 114, 16);
-        panel_1.add(lblAvailableSensors);
+        JLabel lblAvaliableSensors = new JLabel("Avaliable Sensors:");
+        lblAvaliableSensors.setBounds(6, 40, 114, 16);
+        panel_1.add(lblAvaliableSensors);
 
-        cmbSensor = new JComboBox<LightSensor>();
+        cmbSensor = new JComboBox<PresenceSensor>();
         cmbSensor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LightSensor lightSensor = (LightSensor) cmbSensor.getSelectedItem();
-                automatedIlluminationByLuminosity.setLightSensor(lightSensor);
+                PresenceSensor presenceSensor = (PresenceSensor) cmbSensor.getSelectedItem();
+                automatedIlluminationByPresence.setPresenceSensor(presenceSensor);
             }
         });
-        cmbSensor.setBounds(125, 36, 293, 30);
+        cmbSensor.setBounds(125, 36, 293, 27);
         panel_1.add(cmbSensor);
     }
 
-    private void updateAvailableCombo() {
-        ArrayList<Led> leds = automatedIlluminationByLuminosity.getLeds();
+    private void updateAvaliableCombo() {
+        ArrayList<Led> leds = automatedIlluminationByPresence.getLeds();
         Led[] ledArray= new Led[leds.size()];
         int i=0;
         for (Led led : leds) {
             ledArray[i] = (Led) led;
             i++;
         }
-        cmbAvaliableLeds.setModel(new DefaultComboBoxModel<Led>(ledArray));
+        cmbAvailableLeds.setModel(new DefaultComboBoxModel<Led>(ledArray));
     }
 
-    private void updateLightSensorCombo() {
-        ArrayList<Hardware> hardwares = Main.getHouseInstance().getAllHardwareByType(LightSensor.class);
-        LightSensor[] lightSensors= new LightSensor[hardwares.size()];
+    private void updateLighSensorCombo() {
+        ArrayList<Hardware> hardwares = Main.getHouseInstance().getAllHardwareByType(PresenceSensor.class);
+        PresenceSensor[] presenceSensors= new PresenceSensor[hardwares.size()];
         int i=0;
         for (Hardware hardware : hardwares) {
-            lightSensors[i] = (LightSensor) hardware;
+            presenceSensors[i] = (PresenceSensor) hardware;
             i++;
         }
-        cmbSensor.setModel(new DefaultComboBoxModel<LightSensor>(lightSensors));
+        cmbSensor.setModel(new DefaultComboBoxModel<PresenceSensor>(presenceSensors));
     }
 
     private void updateLedsToAutomateCombo() {
-        ArrayList<Led> leds = automatedIlluminationByLuminosity.getLedsToAutomate();
+        ArrayList<Led> leds = automatedIlluminationByPresence.getLedsToAutomate();
         Led[] ledArray= new Led[leds.size()];
         int i=0;
         for (Led led : leds) {

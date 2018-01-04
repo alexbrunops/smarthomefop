@@ -6,6 +6,7 @@ import br.com.rise.smarthome.Devices.Hardware;
 import br.com.rise.smarthome.Devices.Led;
 import br.com.rise.smarthome.Feature.Alarm.AlarmAgainstRobbery;
 import br.com.rise.smarthome.Feature.AutomatedIllumination.AutomatedIlluminationByLuminosity;
+import br.com.rise.smarthome.Feature.AutomatedIllumination.AutomatedIlluminationByPresence;
 import br.com.rise.smarthome.Feature.PanicMode.PanicMode;
 import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusion;
 import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
@@ -63,6 +64,7 @@ public class HouseFacade {
 
 		availableFeatures = new ArrayList<BaseFeature>();
 		availableFeatures.add(AutomatedIlluminationByLuminosity.getInstance());
+		availableFeatures.add(AutomatedIlluminationByPresence.getInstance());
 	}
 	
 	public void addFeature(BaseFeature feature) {
