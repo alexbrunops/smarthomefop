@@ -62,11 +62,9 @@ public class Main extends JFrame {
 
 	public static void removeFeatureTab(Class<? extends BaseFeature> clazz) {
 
-		if (clazz.equals(AlarmAgainstRobbery.class)) {
-			Component component = featureAlreadyExist(clazz);
-			if (component != null) {
-				tabbedPane.remove(component);
-			}
+		Component component = featureAlreadyExist(clazz);
+		if (component != null) {
+			tabbedPane.remove(component);
 		}
 
 	}
