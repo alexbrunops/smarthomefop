@@ -3,10 +3,12 @@ package br.com.rise.smarthome.Feature.PanicMode;
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
 import br.com.rise.smarthome.BaseComponents.BaseUI;
 import br.com.rise.smarthome.Devices.Led;
-import br.com.rise.smarthome.Feature.MandatoryFeature;
+import br.com.rise.smarthome.Feature.OptionalFeature;
 import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
+import br.com.rise.smarthome.Home.Main;
+import org.apache.commons.collections.CollectionUtils;
 
-@MandatoryFeature
+@OptionalFeature
 public class PanicMode extends BaseFeature {
 
 	private static PanicMode panicMode = null;
@@ -15,12 +17,20 @@ public class PanicMode extends BaseFeature {
 	protected PanicMode() {
 	}
 
-	public static PanicMode getInstance(UserIllumination userIllumination) {
+	public static PanicMode getInstance() throws Exception {
 
 		if (panicMode == null) {
 			panicMode = new PanicMode();
 			panicMode.setName("Panic Mode");
-			panicMode.addRequiredFeature(userIllumination);
+			for (BaseFeature feature : Main.getHouseInstance().getFeatures()) {
+				if (feature.getName().equals("User Illumination")) {
+					panicMode.addRequiredFeature((UserIllumination) feature);
+				}
+			}
+
+			if (CollectionUtils.isEmpty(panicMode.getRequiredFeatures())) {
+				throw new Exception("Feature required not exists");
+			}
 		}
 
 		return panicMode;

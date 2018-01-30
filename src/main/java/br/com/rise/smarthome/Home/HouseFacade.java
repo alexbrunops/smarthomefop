@@ -1,15 +1,20 @@
 package br.com.rise.smarthome.Home;
 
 import br.com.rise.smarthome.BaseComponents.BaseFeature;
-import br.com.rise.smarthome.Devices.Alarm;
-import br.com.rise.smarthome.Devices.Hardware;
-import br.com.rise.smarthome.Devices.Led;
+import br.com.rise.smarthome.Devices.*;
+import br.com.rise.smarthome.Feature.AdaptableFeature;
 import br.com.rise.smarthome.Feature.Alarm.AlarmAgainstRobbery;
+import br.com.rise.smarthome.Feature.AlternativeFeature;
+import br.com.rise.smarthome.Feature.AutomatedAirConditionerControl.AutomatedAirConditionerControl;
 import br.com.rise.smarthome.Feature.AutomatedIlluminationByLuminosity.AutomatedIlluminationByLuminosity;
 import br.com.rise.smarthome.Feature.AutomatedIlluminationByPresence.AutomatedIlluminationByPresence;
+import br.com.rise.smarthome.Feature.AutomatedWindowControl.AutomatedWindowControl;
+import br.com.rise.smarthome.Feature.LockDoors.LockDoors;
 import br.com.rise.smarthome.Feature.PanicMode.PanicMode;
 import br.com.rise.smarthome.Feature.PresenceIllusion.PresenceIllusion;
+import br.com.rise.smarthome.Feature.UserAirConditionerControl.UserAirConditionerControl;
 import br.com.rise.smarthome.Feature.UserIllumination.UserIllumination;
+import br.com.rise.smarthome.Feature.UserWindowControl.UserWindowControl;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.swing.*;
@@ -40,20 +45,19 @@ public class HouseFacade {
 		addFeature(userIlumination);
 		PresenceIllusion presenceIlusion = PresenceIllusion.getInstance(userIlumination);
 		addFeature(presenceIlusion);
-		PanicMode panicMode = PanicMode.getInstance(userIlumination);
-		addFeature(panicMode);
 	}
 
 	private void loadOptionalFeatures() {
 		AlarmAgainstRobbery alarmAgainstRobbery = AlarmAgainstRobbery.getInstance(new ArrayList<Alarm>());
 		addFeature(alarmAgainstRobbery);
-
-//		LockDoors lockDoors = LockDoors.getInstance(new ArrayList<AutomaticDoor>());
-//		addFeature(lockDoors);
-//		UserAirConditionerControl userAirConditionerControl = UserAirConditionerControl.getInstance(new ArrayList<AirConditioner>());
-//		addFeature(userAirConditionerControl);
-//		UserWindowControl userWindowControl = UserWindowControl.getInstance(new ArrayList<AutomaticWindow>());
-//		addFeature(userWindowControl);
+		PanicMode panicMode = PanicMode.getInstance();
+		addFeature(panicMode);
+		UserWindowControl userWindowControl = UserWindowControl.getInstance(new ArrayList<AutomaticWindow>());
+		addAvailableFeature(userWindowControl);
+		UserAirConditionerControl userAirConditionerControl = UserAirConditionerControl.getInstance(new ArrayList<AirConditioner>());
+		addAvailableFeature(userAirConditionerControl);
+		LockDoors lockDoors = LockDoors.getInstance(new ArrayList<AutomaticDoor>());
+		addFeature(lockDoors);
 	}
 
 	public void addAvailableFeature(BaseFeature featureBase){
@@ -65,11 +69,17 @@ public class HouseFacade {
 
 		availableFeatures.add(AutomatedIlluminationByPresence.getInstance());
 		availableFeatures.add(AutomatedIlluminationByLuminosity.getInstance());
+		availableFeatures.add(AutomatedAirConditionerControl.getInstance());
+		availableFeatures.add(AutomatedWindowControl.getInstance());
 	}
 	
 	public void addFeature(BaseFeature feature) {
 		if (feature != null) {
-			if (!features.contains(feature) && evaluationForFeatureHierarchy(feature)) {
+			if (feature.getClass().getAnnotationsByType(AlternativeFeature.class).length > 0) {
+				feature = evaluateForAlternativeFeature(feature);
+			}
+
+			if (feature != null && !features.contains(feature) && evaluationForFeatureHierarchy(feature)) {
 				features.add(feature);
 			}
 		}
@@ -86,9 +96,9 @@ public class HouseFacade {
 	private void resolveRemotionFeatureHierarchy(BaseFeature feature) {
 		Class<? extends BaseFeature> featureClass = feature.getClass();
 
-//		if(featureClass.getSuperclass().equals(BaseFeature.class)) {
-//			return;
-//		}
+		if (featureClass.getSuperclass().equals(BaseFeature.class)) {
+			return;
+		}
 
 		// Alternative Features have abstract superclass, so always can be deleted
 		if(Modifier.isAbstract(featureClass.getSuperclass().getModifiers())){
@@ -141,7 +151,7 @@ public class HouseFacade {
 			if(f.getClass().getSuperclass().equals(newFeature.getClass())){
 				return false;
 			}
-			
+
 		}
 		
 		return true;
@@ -164,6 +174,30 @@ public class HouseFacade {
 		}
 
 		return true;
+	}
+
+	private BaseFeature evaluateForAlternativeFeature(BaseFeature newFeature){
+		BaseFeature selectedFeature = null;
+
+		AlternativeFeature alternativeFeature = newFeature.getClass().getAnnotationsByType(AlternativeFeature.class)[0];
+		for (Class<? extends BaseFeature> featureClass : alternativeFeature.alternatives()) {
+			for (BaseFeature featureBase : features) {
+				if(featureBase.getClass().equals(featureClass)){
+					AlternativeFeatureSelectionDialog dialog = new AlternativeFeatureSelectionDialog(featureBase, newFeature);
+					dialog.setVisible(true);
+					selectedFeature = dialog.getSelectedFeature();
+					if(selectedFeature.equals(newFeature)){
+						features.remove(featureBase);
+						Main.removeFeatureTab(featureBase.getClass());
+						return selectedFeature;
+					}else{
+						return null;
+					}
+				}
+			}
+		}
+
+		return newFeature;
 	}
 
 	private void exchangeBrotherFeaturesData(BaseFeature featureBase,BaseFeature newFeature) { }

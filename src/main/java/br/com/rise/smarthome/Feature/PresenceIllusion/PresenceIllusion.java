@@ -84,7 +84,7 @@ public class PresenceIllusion extends BaseFeature {
 		public synchronized void run(){
 			while(!shouldInterrupt && timeToStop != 0) {
 				try{
-					if(CollectionUtils.isNotEmpty(userIllumination.getLeds())) {
+					if (CollectionUtils.isNotEmpty(userIllumination.getLeds())) {
 						synchronized (userIllumination) {
 							String instructionsArray[] = {String.valueOf(
 									userIllumination.getLeds().get(new Random().nextInt(userIllumination.getLeds().size())).getPin()), "-1"};

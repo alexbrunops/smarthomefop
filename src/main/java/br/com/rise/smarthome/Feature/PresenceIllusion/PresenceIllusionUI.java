@@ -71,7 +71,9 @@ public class PresenceIllusionUI extends BaseUI {
 				Date dateStart = (Date) spinnerStart.getValue();
 				Date dateStop = (Date) spinnerStop.getValue();
 
-				presenceIllusion.proceedActions(new String[]{"1", sdf.format(dateStart), sdf.format(dateStop)});
+				long diff = dateStart.getTime() - dateStop.getTime();
+
+				presenceIllusion.proceedActions(new String[]{"1", String.valueOf(diff), sdf.format(dateStop)});
 			} else {
 				spinnerStart.setEnabled(true);
 				spinnerStop.setEnabled(true);

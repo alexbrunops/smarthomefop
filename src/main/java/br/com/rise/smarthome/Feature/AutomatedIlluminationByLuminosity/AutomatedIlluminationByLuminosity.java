@@ -18,12 +18,13 @@ public class AutomatedIlluminationByLuminosity extends UserIllumination implemen
 	private AutomatedIlluminationByLuminosity() {}
 
 	public static AutomatedIlluminationByLuminosity getInstance() {
-		if(automatedIlluminationByLuminosity == null){
+		if (automatedIlluminationByLuminosity == null) {
 			automatedIlluminationByLuminosity = new AutomatedIlluminationByLuminosity();
 			automatedIlluminationByLuminosity.setName("Automated Illumination By Luminosity");
 			automatedIlluminationByLuminosity.setLedsToAutomate(new ArrayList<Led>());
 			automatedIlluminationByLuminosity.setActive(false);
 		}
+
 		return automatedIlluminationByLuminosity;
 	}
 
@@ -31,8 +32,8 @@ public class AutomatedIlluminationByLuminosity extends UserIllumination implemen
 
 	@Override
 	public void proceedActions(){
-		if(isActive()){
-			if(ledsToAutomate != null && lightSensor != null){
+		if (isActive()) {
+			if (ledsToAutomate != null && lightSensor != null) {
 				for(Led led : ledsToAutomate) {
 					lightSensor.act(led);
 				}
